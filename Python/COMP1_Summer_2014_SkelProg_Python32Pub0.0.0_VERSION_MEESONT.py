@@ -215,38 +215,47 @@ def PlayGame(Deck, RecentScores):
     GetCard(NextCard, Deck, NoOfCardsTurnedOver)
     Choice = ''
     
-    while (Choice != 'y') and (Choice != 'n') and (Choice != 'j'):
+    while (Choice != 'y') and (Choice != 'n') and ((Choice != 'j') or (JokerUses == 2)):
       Choice = GetChoiceFromUser()
+      
     DisplayCard(NextCard)
     NoOfCardsTurnedOver = NoOfCardsTurnedOver + 1
     Higher = IsNextCardHigher(LastCard, NextCard)
     
-    if (Choice == 'j'):
-      
-      if(JokerUses < 2):
-        DisplayCorrectGuessMessage(NoOfCardsTurnedOver - 1)
-        LastCard.Rank = NextCard.Rank
-        LastCard.Suit = NextCard.Suit
-        JokerUses += 1        
-      else:
-        print("You have used all your jokers!")
-        GameOver = True
 
-    
-    elif (Higher and Choice == 'y') or (not Higher and Choice == 'n'):
+    if (Higher and Choice == 'y') or (not Higher and Choice == 'n') or (Choice == 'j'):
       
-      DisplayCorrectGuessMessage(NoOfCardsTurnedOver - 1)
-      LastCard.Rank = NextCard.Rank
-      LastCard.Suit = NextCard.Suit      
+      while (JokerUses < 2):
+        if(Choice == 'j'):
+          DisplayCorrectGuessMessage(NoOfCardsTurnedOver - 1)
+          LastCard.Rank = NextCard.Rank
+          LastCard.Suit = NextCard.Suit
+          JokerUses += 1
+          continue
+        else:
+          continue
+      
+      else:
+        print("You have used all of your jokers!")
+        continue
     
     else:
       GameOver = True
+      
   if GameOver:
     DisplayEndOfGameMessage(NoOfCardsTurnedOver - 2)
     UpdateRecentScores(RecentScores, NoOfCardsTurnedOver - 2)
   else:
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
+    
+
+def CalculateProbability(Deck):
+  probability = 0
+  numTurnedOver = 0
+  numCardsTurnedOver = 0
+  
+  
 
 if __name__ == '__main__':
   for Count in range(1, 53):
@@ -268,3 +277,14 @@ if __name__ == '__main__':
       DisplayRecentScores(RecentScores)
     elif Choice == '4':
       ResetRecentScores(RecentScores)
+
+
+      '''if (Choice == 'j'):
+        if(JokerUses < 2):
+          DisplayCorrectGuessMessage(NoOfCardsTurnedOver - 1)
+          LastCard.Rank = NextCard.Rank
+          LastCard.Suit = NextCard.Suit
+          JokerUses += 1        
+        else:
+          print("You have used all your jokers!")
+          #GameOver = True'''
