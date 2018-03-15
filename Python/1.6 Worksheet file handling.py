@@ -17,8 +17,19 @@ def saveToFile(openMode='a'):
     while (studentName != "xxx"):
         studentMark = int(input(f"Enter {studentName}'s mark"))
         with open('studentsNamesFile.txt', openMode) as file:
-            file.write(studentName + "," + str(studentMark))
+            file.write(str(studentName) + "," + str(studentMark))
         studentName = input("Enter a student name, xxx to finish: ")
 
 def calculateAverage():
+    studentMark = 0
+    studentName = ""
+    currentLine = ""
+    total = 0
+    numRecs = 0
+    with open('studentsNamesFile.txt', r) as f:
+        for line in f.readLine():
+            studentName, studentMark = line.split(",")
+            numRecs += 1
+        total = total + studentMark
     
+            
