@@ -61,9 +61,24 @@ def displayData():
             
 #Main program
 option = displayMenu()
+quit = False
 
-if (option == "1"):
-    saveToFile('w')
+while (quit == False):
+    if (option == "1"):
+        saveToFile('w')
+    elif (option == "2"):
+        saveToFile('a')
+    elif (option == "3"):
+        print(calculateAverage())
+    elif (option == "4"):
+        displayData()
+    elif (option == "5"):
+        quit = True
+    else:
+        option = displayMenu()    
+
+print("You chose to quit!")
+'''    saveToFile('w')
 elif (option == "2"):
     saveToFile('a')
 elif (option == "3"):
@@ -73,6 +88,5 @@ elif (option == "4"):
 elif (option == "5"):
     sys.exit()
 else:
-    option = displayMenu()
+    option = displayMenu()'''
 
-print("You chose to quit!")
