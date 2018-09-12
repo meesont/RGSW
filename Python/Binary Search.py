@@ -3,6 +3,8 @@
 Recursive will just find if the array contains the value or not.
 Iterative will return the values position in the array also
 '''
+import functools
+import time
 
 #Timing decorator (online code)
 def timing(func):
@@ -55,7 +57,10 @@ def binarySearchRecursive(a_list, val):
         
 if __name__ == "__main__":
     
-    array = [1, 2, 3, 4, 5, 6]
+    array = []
+    arraySize = int(input("enter size of array: "))
+    for x in range(0, arraySize):
+        array.append(x)
     searchValue = int(input("Enter the value to search for in the array: "))
     
     
