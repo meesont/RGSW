@@ -1,6 +1,6 @@
 # # @Author: Thomas Meeson <Thomas>
 # # @Date:   10-12-2018
-# @Last modified by:   Thomas
+# @Last modified by:   thomas
 # @Last modified time: 10-12-2018
 # # @License: Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,17 @@ response = r.get('https://www.hipstercode.com/')
 # ]
 # response.encoding = 'ISO-8859-1'
 
+class LoginPage:
+    def __init__(self, siteLink, username, passworrd, token):
+        self.password = password
+        self.siteLink = siteLink
+        self.username = username
+        self.token = token
+
+
 loginPage = 'https://schoolweb.rgsw.org.uk/Login/login.aspx?prelogin=https%3a%2f%2fschoolweb.rgsw.org.uk%2f'
+loginName = 'username'
+passwordName = 'password'
 
 outfile = '/Users/thomas/Documents/School Coding - Github/RGSW/Python/scrapingOutfile.txt'
 
