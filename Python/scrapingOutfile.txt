@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
 <meta name="description" content="FREE online programmer training from beginner to advanced courses. Keep up to date with the latest programming news, tutorials and information.">
 <link rel="canonical" href="https://www.hipstercode.com/" />
 <link rel="amphtml" href="https://www.hipstercode.com/">
@@ -43,7 +43,7 @@
     overflow: hidden;
 }
 </style>
-    
+
     <meta name="google-site-verification" content="d6qw22UurnudY4QErk2jRqX1Bqc05Y8u18761sJ5ZIo" />
 
     <style>
@@ -76,7 +76,7 @@
     }
 
     header {
-        background-image: url(/static/img/main_header.jpg); 
+        background-image: url(/static/img/main_header.jpg);
     }
 
     iframe {
@@ -89,7 +89,7 @@
         width: 100%;
         height: auto;
     }
-    
+
     @media (min-width: 768px) {
         iframe {
             width: 100%;
@@ -103,7 +103,7 @@
             padding-bottom: 0;
         }
     }
-        
+
     </style>
 
 
@@ -135,21 +135,21 @@
                     <li>
                         <a class="page-scroll" href="/">Home</a>
                     </li>
-                    
+
                       <li>
                           <a class="page-scroll" href="/login/">Log In</a>
                       </li>
                       <li>
                           <a class="page-scroll" href="/accounts/register/">Register</a>
                       </li>
-                    
+
                 </ul>
             </div>
         </div>
     </nav>
 
-    
-    
+
+
     <header>
         <div class="container">
             <div class="intro-text">
@@ -162,7 +162,7 @@
     <section id="services">
         <div class="container">
             <div class="row">
-                    
+
                 <div class="col-md-3">
                     <iframe width="560" height="315" src="https://www.youtube.com/embed/DqXtSyPSw_0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
@@ -198,11 +198,11 @@
                 <div class="col-md-3">
                         <iframe width="560" height="315" src="https://www.youtube.com/embed/N9_ccYCKhWk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
-            </div>             
+            </div>
         </div>
-    </section>      
+    </section>
 
-    
+
     <footer>
         <div class="container">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -263,8 +263,8 @@
     <script src="/static/js/jqBootstrapValidation.js"></script>
     <script src="/static/js/contact_me.js"></script>
     <script src="/static/js/agency.js"></script>
-    
 
-    
+
+
 </body>
 </html>
