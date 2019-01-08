@@ -26,5 +26,5 @@ password.clear()
 user.send_keys("meesont")
 password.send_keys("")
 
-# driver.find_element_by_type('submit').click()
-driver.find_element_by_xpath("//input[@type='submit']").click()
+driver.find_element_by_type('submit').click()
+# driver.find_element_by_xpath("//input[@type='submit']").click()
