@@ -219,7 +219,7 @@ def OpenClose(Open, Items, Places, ItemToOpenClose, CurrentLocation):
             else:
               IndexOfOtherSideOfDoor = GetIndexOfItem("", Items[Count].ID + ID_DIFFERENCE_FOR_OBJECT_IN_TWO_LOCATIONS, Items)
             Items = ChangeStatusOfItem(Items, IndexOfOtherSideOfDoor, Command)
-            Count = len(Items) + 1            
+            Count = len(Items) + 1
     Count += 1
   if not ActionWorked:
     return -1, Items, Places
@@ -254,8 +254,8 @@ def ChangeStatusOfItem(Items, IndexOfItem, NewStatus):
 
 def GetRandomNumber(LowerLimitValue, UpperLimitValue):
   return random.randint(LowerLimitValue, UpperLimitValue)
-      
-def RollDie(Lower, Upper): 
+
+def RollDie(Lower, Upper):
   LowerLimitValue = 0
   if Lower.isnumeric():
     LowerLimitValue = int(Lower)
@@ -324,7 +324,7 @@ def ReadItem(Items, ItemToRead, CurrentLocation):
     SubCommand, SubCommandParameter = ExtractResultForCommand(SubCommand, SubCommandParameter, ResultForCommand)
     if SubCommand == "say":
       Say(SubCommandParameter)
-      
+
 def GetItem(Items, ItemToGet, CurrentLocation):
   SubCommand = ""
   SubCommandParameter = ""
@@ -440,7 +440,7 @@ def PlayDiceGame(Characters, Items, OtherCharacterName):
     else:
       print("Draw!")
   return Items
-      
+
 def MoveItem(Items, ItemToMove, CurrentLocation):
   SubCommand = ""
   SubCommandParameter = ""
@@ -467,7 +467,7 @@ def DisplayInventory(Items):
   for Thing in Items:
     if Thing.Location == INVENTORY:
       print(Thing.Name)
-    
+
 def DisplayGettableItemsInLocation(Items, CurrentLocation):
   ContainsGettableItems = False
   ListOfItems = "On the floor there is: "
@@ -479,7 +479,7 @@ def DisplayGettableItemsInLocation(Items, CurrentLocation):
       ContainsGettableItems = True
   if ContainsGettableItems:
     print(ListOfItems + ".")
-    
+
 def DisplayOpenCloseMessage(ResultOfOpenClose, OpenCommand):
   if ResultOfOpenClose >= 0:
     if OpenCommand:
@@ -492,7 +492,7 @@ def DisplayOpenCloseMessage(ResultOfOpenClose, OpenCommand):
     Say("It already is.")
   elif ResultOfOpenClose == -1:
     Say("You can't open that.")
-       
+
 def PlayGame(Characters, Items, Places):
   StopGame = False
   Moved = True
