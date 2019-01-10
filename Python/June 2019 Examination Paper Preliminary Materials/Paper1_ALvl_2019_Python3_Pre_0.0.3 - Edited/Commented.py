@@ -87,7 +87,7 @@ def DisplayDoorStatus(Status):
   else:
     print("The door is closed.")
 
-def DisplayContentsOfContainerItem(Items, ContainerID):
+def DisplayContentsOfContainerItem(Items, ContainerID): #Container item may be shelf for example
   print("It contains: ", end = "")
   ContainsItem = False
   for Thing in Items:
@@ -103,7 +103,7 @@ def DisplayContentsOfContainerItem(Items, ContainerID):
 
 def Examine(Items, Characters, ItemToExamine, CurrentLocation):
   Count = 0
-  if ItemToExamine == "inventory":
+  if ItemToExamine == "inventory": #Allows player to exmaine own inventory and see which items they have in their posession
     DisplayInventory(Items)
   else:
     IndexOfItem = GetIndexOfItem(ItemToExamine, -1, Items)
@@ -461,7 +461,7 @@ def MoveItem(Items, ItemToMove, CurrentLocation):
       return
   print("You can't find " + ItemToMove + ".")
 
-def DisplayInventory(Items):
+def DisplayInventory(Items): #Returns a list of strings for the items in inventory (list of strings not returned rather printed directly to user)
   print()
   print("You are currently carrying the following items:")
   for Thing in Items:
