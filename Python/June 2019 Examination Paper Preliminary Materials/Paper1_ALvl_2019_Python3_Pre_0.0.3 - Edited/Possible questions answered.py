@@ -11,6 +11,9 @@ import struct
 INVENTORY = 1001
 MINIMUM_ID_FOR_ITEM = 2001
 ID_DIFFERENCE_FOR_OBJECT_IN_TWO_LOCATIONS = 10000
+INVENTORYLIMIT = 5
+PLACESVISITED = []
+MAP = {}
 
 class Place():
   def __init__(self):
@@ -73,6 +76,133 @@ def AddCharacter():
     TempCharacter.ID = int(input('Input the ID of the chracter: '))
     TempCharacter.CurrentLocation = int(input('Input the current location of the character: '))
     return TempCharacter
+
+def Drop(Items, Characters, ItemToDrop, CurrentLocation):
+    count = 0
+    IndexOfItem = GetIndexOfItem(ItemToDrop, -1, Items)
+
+    if IndexOfItem != -1:
+        if Items[IndexOfItem].Name == ItemToDrop and Items[IndexOfItem].Location  == INVENTORY:
+            print(Items[IndexOfItem].Name + " was dropped")
+            Items[IndexOfItem].Location = CurrentLocation
+            return Items
+        else:
+            print('You cannot find ' + ItemToDrop + ' to drop.')
+    else:
+        Say('This item does not exist, sorry try again!')
+
+def LookForSpaceInInventory(Items):
+    spaceInInventory = INVENTORYLIMIT
+    for i in Items:
+        if i.Location == INVENTORY:
+            spaceInInventory -= 1
+    return spaceInInventory
+
+def CheckIfAttackPossible(Items, Characters, CharacterToAttack):
+    PlayerHasWeapon = False
+    PlayersInSameRoom = False
+    IndexOfOtherCharacter = -1
+    IndexoOfPlayerWeapon = -1
+    for i in Items:
+        if i.Location == INVENTORY and 'weapon' in i.Status:
+            PlayerHasWeapon = True
+            IndexOfPlayerWeapon = GetIndexOfItem("", i.ID, Items)
+    count = 1
+    while count < len(Characters) and not PlayersInSameRoom:
+        if Characters[0].CurrentLocation == Characters[count].CurrentLocation and Characters[count].Name = CharacterToAttack:
+            PlayersInSameRoom = True
+        count += 1
+    return (PlayerHasWeapon and PlayersInSameRoom), IndexOfPlayerWeapon, IndexOfOtherCharacter
+
+def UseWeapon(Characters, Items, CharacterToAttack):
+    AttackPossible, IndexOfPlayerWeapon, IndexOfOtherCharacter = CheckIfAttackPossible(Items, Characters, CharacterToAttack)
+    if not AttackPossible:
+        print("You can't hit!")
+    else:
+        print('You wacked ' + CharacterToAttack)
+        Items = TakeItemFromOtherCharacter(Items, Characters[IndexOfOtherCharacter].ID)
+    return Items
+
+#BELOW BEGINS SUBROUTINES FOR CREATING THE DYNAMIC MAP
+def createRoom(printOrder):
+  #how each room is printed.
+  placeHolder = "%-2s"
+  line1 = ""
+  line2 = ""
+  line3 = ""
+  line4 = ""
+  line5 = ""
+  for room in printOrder:
+    if room == 0:
+      line1 = line1+"       "
+      line2 = line2+"       "
+      line3 = line3+"       "
+      line4 = line4+"       "
+      line5 = line5+"       "
+    else:
+      line1 = line1+" _____ "
+      line2 = line2+" |   | "
+      line3 = line3+" | "+ placeHolder % (str(room)) +"| "
+      line4 = line4+" |   | "
+      line5 = line5+" ̅̅̅̅̅ "  #this is a bar across - something wrong with wikibooks?
+
+  print(line1)
+  print(line2)
+  print(line3)
+  print(line4)
+  print(line5)
+
+def ShowMap():
+    smallestx, smallesty, largestx, largesty = 0, 0, 0, 0
+    for key in MAP:
+        if MAP[key][4] < smallesty:
+            smallesty = MAP[key][4]
+        if MAP[key][3] < smallestx:
+            smallesx = MAP[key][3]
+        if MAP[key][4] > largesty:
+            largesty = MAP[key][4]
+        if MAP[key][3] > largestx:
+            largestx = MAP[key][3]
+    for i in range(smallesty, largesty+1):
+        printOrder = []
+        for j in range(smallestx, largestx+1):
+            for key in MAP:
+                if MAP[key][3] == j and MAP[key][4] == i:
+                    foundRoom = key
+                    break
+            printOrder.append(foundRoom)
+        createRoom(printOrder)
+
+        print('\n')
+
+def BuildMap(currentPlace, directionFromParentRoom, ParentRoom):
+    yoffset, xoffset = 0, 0
+    if ParentRoom != 'null':
+        parentRoomx = MAP[ParentRoom][3]
+        parentRoomy = MAP[ParentRoom][4]
+        if directionFromParentRoom == "west":
+          yoffset = parentRoomy
+          xoffset = parentRoomx - 1
+        if directionFromParentRoom == "east":
+          yoffset = parentRoomy
+          xoffset = parentRoomx + 1
+        if directionFromParentRoom == "north":
+          xoffset = parentRoomx
+          yoffset = parentRoomy - 1
+        if directionFromParentRoom == "south":
+          xoffset = parentRoomx
+          yoffset = parentRoomy + 1
+    MAP[currentPlace] = [currentPlace, directionFromParentRoom, ParentRoom, xoffset, yoffset]
+
+def EatItem(Items, ItemToUse, CurrentLocation, Places):
+    IndexOfItem = GetIndexOfItem(ItemToUse, -1, Items)
+    if IndexOfItem != -1:
+        if Items[IndexOfItem].Location == INVENTORY and 'edible' in Items[IndexOfItem].Status:
+            Items = ChangeLocationOfItem(Item, IndexOfItem, 0)
+            print('You ate the ' + Items[IndexOfItem].Name)
+            return Items
+        print("You can't eat that!")
+        return Items
 #END ADDITION
 
 def GetInstruction():
@@ -92,6 +222,7 @@ def ExtractCommand(Instruction):
   return Command, Instruction
 
 def Go(You, Direction, CurrentPlace):
+  ParentRoom = CurrentPlace.ID
   Moved = True
   if Direction == "north":
     if CurrentPlace.North == 0:
@@ -125,6 +256,10 @@ def Go(You, Direction, CurrentPlace):
       You.CurrentLocation = CurrentPlace.Down
   else:
     Moved = False
+  #ADDED IN ORDER TO WORK WTH THE NEW MAP FUNCTION
+  if Moved and You.CurrentLocation not in PLACESVISITED:
+      PLACESVISITED.append(You.CurrentLocation)
+      BuildMap(You.CurrentLocation, Direction, ParentRoom)
   if not Moved:
     print("You are not able to go in that direction.")
   return You, Moved
@@ -396,6 +531,9 @@ def GetItem(Items, ItemToGet, CurrentLocation):
     print("You can't find " + ItemToGet + ".")
   elif Items[IndexOfItem].Location < MINIMUM_ID_FOR_ITEM and Items[IndexOfItem].Location != CurrentLocation:
     print("You can't find " + ItemToGet + ".")
+  elif LookForSpaceInInventory(Items) == 0: #Added to support new feature resolving around looking for space in inventory
+    print('Sorry your inventory is full!')
+    CanGet = False
   else:
     CanGet = True
   if CanGet:
@@ -550,13 +688,16 @@ def DisplayOpenCloseMessage(ResultOfOpenClose, OpenCommand):
     Say("You can't open that.")
 
 def PlayGame(Characters, Items, Places):
+  BuildMap(Places[Chracters[0].CurrentLocation-1].ID, 'null', 'null')
   StopGame = False
   Moved = True
   while not StopGame:
+    if Places[Characters[0].CurrentLocation-1].ID not in PLACESVISITED:
+      PLACESVISITED.append(Places[Characters[0].CurrentLocation-1].ID)
     if Moved:
       print()
       print()
-      print(Places[Characters[0].CurrentLocation - 1].Description)
+      print(Places[Characters[0].CurrentLocation-1].Description)
       DisplayGettableItemsInLocation(Items, Characters[0].CurrentLocation)
       Moved = False
     Instruction = GetInstruction()
@@ -591,6 +732,13 @@ def PlayGame(Characters, Items, Places):
       StopGame = True
 
     # ADDITION: addition of new commands to further optimise or expand the game
+    elif Command == 'eat':
+        Items = EatItem(Items, Instruction, Characters[0].CurrentLocation, Places)
+    elif Command == 'showmap':
+        ShowMap()
+    elif Command == 'hit':
+        Items = UseWeapon(Characters, Items, Instruction)
+
     elif Command == 'teleport':
         Characters[0], Moved = Teleport(Characters[0], Instruction)
 
