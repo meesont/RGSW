@@ -12,7 +12,7 @@ class Queue: #OOP based queue implementation
     def getQueue(self):
         return self.items
 
-q = Queue() #Instatntiate an instance of the class
+q = Queue() #Instantiate an instance of the class
 
 print(q.enQueue('Tom'))
 print(q.enQueue('Bob'))
