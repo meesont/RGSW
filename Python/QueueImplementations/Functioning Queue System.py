@@ -18,8 +18,8 @@ q = Queue() #Instantiate new Queue
 usingQueue = True
 
 while usingQueue == True:
-    in = input('Enter new queue value: ')
-    q.enQueue(in)
+    entry = input('Enter new queue value: ')
+    q.enQueue(entry)
     cont = input('Continue using queue? (y/n): ')
     if cont == "y":
         usingQueue = True

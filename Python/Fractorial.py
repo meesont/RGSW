@@ -9,3 +9,6 @@ def fractorial(x):
     return total
 
 print(fractorial(5))
+
+for(i in range(0,10)):
+    print(fractorial(i))

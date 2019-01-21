@@ -92,7 +92,7 @@ def LoadDeck(Deck):
     LineFromFile = CurrentFile.readline()
     Deck[Count].Rank = int(LineFromFile)
     Count = Count + 1
- 
+
 def ShuffleDeck(Deck):
   SwapSpace = TCard()
   NoOfSwaps = 1000
@@ -135,15 +135,15 @@ def GetPlayerName():
   print()
   ValidName = False
   #PlayerName = input('Please enter your name: ')
-  
-  while ValidName == False: 
+
+  while ValidName == False:
     PlayerName = input('Please enter your name: ')
     if PlayerName == '':
       print("You must enter a name!")
       ValidName = False
     else:
       ValidName = True
-      
+
 
   print()
   return PlayerName
@@ -214,17 +214,17 @@ def PlayGame(Deck, RecentScores):
   while (NoOfCardsTurnedOver < 52) and (not GameOver):
     GetCard(NextCard, Deck, NoOfCardsTurnedOver)
     Choice = ''
-    
+
     while (Choice != 'y') and (Choice != 'n') and ((Choice != 'j') or (JokerUses == 2)):
       Choice = GetChoiceFromUser()
-      
+
     DisplayCard(NextCard)
     NoOfCardsTurnedOver = NoOfCardsTurnedOver + 1
     Higher = IsNextCardHigher(LastCard, NextCard)
-    
+
 
     if (Higher and Choice == 'y') or (not Higher and Choice == 'n') or (Choice == 'j'):
-      
+
       while (JokerUses < 2):
         if(Choice == 'j'):
           DisplayCorrectGuessMessage(NoOfCardsTurnedOver - 1)
@@ -234,28 +234,28 @@ def PlayGame(Deck, RecentScores):
           continue
         else:
           continue
-      
+
       else:
         print("You have used all of your jokers!")
         continue
-    
+
     else:
       GameOver = True
-      
+
   if GameOver:
     DisplayEndOfGameMessage(NoOfCardsTurnedOver - 2)
     UpdateRecentScores(RecentScores, NoOfCardsTurnedOver - 2)
   else:
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
-    
+
 
 def CalculateProbability(Deck):
   probability = 0
   numTurnedOver = 0
   numCardsTurnedOver = 0
-  
-  
+
+
 
 if __name__ == '__main__':
   for Count in range(1, 53):
@@ -284,7 +284,7 @@ if __name__ == '__main__':
           DisplayCorrectGuessMessage(NoOfCardsTurnedOver - 1)
           LastCard.Rank = NextCard.Rank
           LastCard.Suit = NextCard.Suit
-          JokerUses += 1        
+          JokerUses += 1
         else:
           print("You have used all your jokers!")
           #GameOver = True'''
