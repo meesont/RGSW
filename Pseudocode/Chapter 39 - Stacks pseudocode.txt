@@ -1,0 +1,21 @@
+OUTPUT 'Enter a word to test for palindrome: '
+word = USERINPUT
+
+wordStack = Stack()
+
+wordLen = len(word)
+newWord = ''
+
+FOR i = 0 TO (wordLen - 1) THEN:
+  wordStack.push(word[i])
+ENDFOR
+
+FOR i = 0 TO len(wordStack) THEN:
+  newWord += wordStack.pop()
+ENDFOR
+
+IF newWord = word THEN:
+  OUTPUT 'The word is a palindrome!'
+ELSE:
+  OUTPUT 'The word is not a plaindrome!'
+ENDIF
