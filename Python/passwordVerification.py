@@ -1,6 +1,9 @@
 import random as r
 
-intArr = []
+positionsArr = [None for i in range(3)]
+pin = input('Enter the pin: ')
 
 for i in range(3):
-    intArr[i] = r.randint(0,9)
+    positionsArr[i] = r.randint(0, len(pin))
+
+print(positionsArr)
