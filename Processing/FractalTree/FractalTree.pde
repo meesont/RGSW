@@ -1,10 +1,3 @@
-// Coding Train
-// Ported to processing by Max (https://github.com/TheLastDestroyer)
-// Origional JS by Daniel Shiffman
-// http://patreon.com/codingtrain
-// Code for: https://youtu.be/0jjeOYMjmDU
-
-
 float angle = 45;
 float branch_ratio = 0.67;
 
@@ -17,7 +10,7 @@ void draw(){
   background(51);
   stroke(255);
   translate(width/2, height);
-  branch(100);
+  branch(200);
 }
 
 void branch(float len){

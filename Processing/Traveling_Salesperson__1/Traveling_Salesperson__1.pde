@@ -1,5 +1,5 @@
 PVector[] cities;
-int totalCities = 200;
+int totalCities = 4;
 
 float recordDistance;
 PVector[] bestEver;
