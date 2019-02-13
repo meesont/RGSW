@@ -68,13 +68,18 @@ if __name__ == '__main__':
     for node in ['A', 'B', 'C', 'D', 'E', 'F', 'G']:
         graph.add_node(node)
 
-    graph.add_edge('A', 'B', 10)
-    graph.add_edge('A', 'C', 20)
-    graph.add_edge('B', 'D', 15)
-    graph.add_edge('C', 'D', 30)
-    graph.add_edge('B', 'E', 50)
-    graph.add_edge('D', 'E', 30)
-    graph.add_edge('E', 'F', 5)
-    graph.add_edge('F', 'G', 2)
+    graph.add_edge('A', 'B', 7)
+    graph.add_edge('A', 'C', 5)
+    graph.add_edge('B', 'D', 3)
+    graph.add_edge('C', 'D', 8)
+    graph.add_edge('C', 'E', 9)
+    graph.add_edge('C', 'F', 19)
+    graph.add_edge('C', 'G', 28)
+    graph.add_edge('D', 'E', 12)
+    graph.add_edge('E', 'F', 14)
+    graph.add_edge('E', 'G', 17)
+    graph.add_edge('F', 'G', 5)
 
-    print(shortest_path(graph, 'A', 'D')) # output: (25, ['A', 'B', 'D']) 
+
+
+    print(shortest_path(graph, 'B', 'F')) # output: (20, ['A', 'H', 'I'])
