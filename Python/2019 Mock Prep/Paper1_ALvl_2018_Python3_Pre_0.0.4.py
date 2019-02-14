@@ -13,7 +13,7 @@ class QueueOfTiles():
     for Count in range(self._MaxSize):
       self._Contents.append("")
       self.Add()
-      
+
   def IsEmpty(self):
     if self._Rear == -1:
       return True
@@ -57,11 +57,11 @@ def CreateTileDictionary():
     else:
       TileDictionary[chr(65 + Count)] = 5
   return TileDictionary
-    
+
 def DisplayTileValues(TileDictionary, AllowedWords):
   print()
   print("TILE VALUES")
-  print()  
+  print()
   for Letter, Points in TileDictionary.items():
     print("Points for " + Letter + ": " + str(Points))
   print()
@@ -92,7 +92,7 @@ def CheckWordIsInTiles(Word, PlayerTiles):
       CopyOfTiles = CopyOfTiles.replace(Word[Count], "", 1)
     else:
       InTiles = False
-  return InTiles 
+  return InTiles
 
 def CheckWordIsValid(Word, AllowedWords):
   ValidWord = False
@@ -107,19 +107,19 @@ def AddEndOfTurnTiles(TileQueue, PlayerTiles, NewTileChoice, Choice):
   if NewTileChoice == "1":
     NoOfEndOfTurnTiles = len(Choice)
   elif NewTileChoice == "2":
-    NoOfEndOfTurnTiles = 3    
+    NoOfEndOfTurnTiles = 3
   else:
     NoOfEndOfTurnTiles = len(Choice) + 3
   for Count in range(NoOfEndOfTurnTiles):
     PlayerTiles += TileQueue.Remove()
     TileQueue.Add()
-  return TileQueue, PlayerTiles  
+  return TileQueue, PlayerTiles
 
 def FillHandWithTiles(TileQueue, PlayerTiles, MaxHandSize):
   while len(PlayerTiles) <= MaxHandSize:
     PlayerTiles += TileQueue.Remove()
     TileQueue.Add()
-  return TileQueue, PlayerTiles  
+  return TileQueue, PlayerTiles
 
 def GetScoreForWord(Word, TileDictionary):
   Score = 0
@@ -130,17 +130,17 @@ def GetScoreForWord(Word, TileDictionary):
   elif len(Word) > 5:
     Score += 5
   return Score
-  
+
 def UpdateAfterAllowedWord(Word, PlayerTiles, PlayerScore, PlayerTilesPlayed, TileDictionary, AllowedWords):
   PlayerTilesPlayed += len(Word)
   for Letter in Word:
     PlayerTiles = PlayerTiles.replace(Letter, "", 1)
   PlayerScore += GetScoreForWord(Word, TileDictionary)
   return PlayerTiles, PlayerScore, PlayerTilesPlayed
-      
+
 def UpdateScoreWithPenalty(PlayerScore, PlayerTiles, TileDictionary):
   for Count in range (len(PlayerTiles)):
-    PlayerScore -= TileDictionary[PlayerTiles[Count]]  
+    PlayerScore -= TileDictionary[PlayerTiles[Count]]
   return PlayerScore
 
 def GetChoice():
@@ -170,7 +170,7 @@ def GetNewTileChoice():
 def DisplayTilesInHand(PlayerTiles):
   print()
   print("Your current hand:", PlayerTiles)
-  
+
 def HaveTurn(PlayerName, PlayerTiles, PlayerTilesPlayed, PlayerScore, TileDictionary, TileQueue, AllowedWords, MaxHandSize, NoOfEndOfTurnTiles):
   print()
   print(PlayerName, "it is your turn.")
@@ -184,7 +184,7 @@ def HaveTurn(PlayerName, PlayerTiles, PlayerTilesPlayed, PlayerScore, TileDictio
     elif Choice == "4":
       TileQueue.Show()
     elif Choice == "7":
-      DisplayTilesInHand(PlayerTiles)      
+      DisplayTilesInHand(PlayerTiles)
     elif Choice == "0":
       ValidChoice = True
       TileQueue, PlayerTiles = FillHandWithTiles(TileQueue, PlayerTiles, MaxHandSize)
@@ -212,7 +212,7 @@ def HaveTurn(PlayerName, PlayerTiles, PlayerTilesPlayed, PlayerScore, TileDictio
       print("Your word was:", Choice)
       print("Your new score is:", PlayerScore)
       print("You have played", PlayerTilesPlayed, "tiles so far in this game.")
-  return PlayerTiles, PlayerTilesPlayed, PlayerScore, TileQueue  
+  return PlayerTiles, PlayerTilesPlayed, PlayerScore, TileQueue
 
 def DisplayWinner(PlayerOneScore, PlayerTwoScore):
   print()
@@ -227,7 +227,7 @@ def DisplayWinner(PlayerOneScore, PlayerTwoScore):
   else:
     print("It is a draw!")
   print()
-  
+
 def PlayGame(AllowedWords, TileDictionary, RandomStart, StartHandSize, MaxHandSize, MaxTilesPlayed, NoOfEndOfTurnTiles):
   PlayerOneScore = 50
   PlayerTwoScore = 50
@@ -260,7 +260,7 @@ def DisplayMenu():
   print("2. Play game with training start hand")
   print("9. Quit")
   print()
-  
+
 def Main():
   print("++++++++++++++++++++++++++++++++++++++")
   print("+ Welcome to the WORDS WITH AQA game +")
@@ -268,7 +268,7 @@ def Main():
   print()
   print()
   AllowedWords = LoadAllowedWords()
-  TileDictionary = CreateTileDictionary()
+  TileDictionary = CreateTileDictionary() #This is the same every single time {'A': 1, 'B': 2, 'C': 2, 'D': 2, 'E': 1, 'F': 3, 'G': 2, 'H': 3, 'I': 1, 'J': 5, 'K': 3, 'L': 2, 'M': 2, 'N': 1, 'O': 1, 'P': 2, 'Q': 5, 'R': 1, 'S': 1, 'T': 1, 'U': 2, 'V': 3, 'W': 3, 'X': 5, 'Y': 3, 'Z': 5}
   MaxHandSize = 20
   MaxTilesPlayed = 50
   NoOfEndOfTurnTiles = 3
@@ -281,6 +281,6 @@ def Main():
       PlayGame(AllowedWords, TileDictionary, True, StartHandSize, MaxHandSize, MaxTilesPlayed, NoOfEndOfTurnTiles)
     elif Choice == "2":
       PlayGame(AllowedWords, TileDictionary, False, 15, MaxHandSize, MaxTilesPlayed, NoOfEndOfTurnTiles)
-      
+
 if __name__ == "__main__":
   Main()
