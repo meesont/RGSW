@@ -1,8 +1,8 @@
-# # @Author: Thomas Meeson <Thomas>
-# # @Date:   10-12-2018
+# @Author: Thomas Meeson <Thomas>
+# @Date:   10-12-2018
 # @Last modified by:   thomas
-# @Last modified time: 11-12-2018
-# # @License: Licensed under the Apache License, Version 2.0 (the "License");
+# @Last modified time: 18-02-2019
+# @License: Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# # @Copyright: Copyright 2018 Thomas Meeson
+# @Copyright: Copyright 2018 Thomas Meeson
 
 import requests as r
 from bs4 import BeautifulSoup
