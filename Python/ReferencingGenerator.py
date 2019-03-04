@@ -33,9 +33,12 @@ def loadFile(fileName):
     return links
 
 def createRef(link):
+    print(link)
     response = r.get(link)
+    print(response)
 
     soup = bs(response.content, 'html.parser')
+    # print(soup)
     title = soup.find('div', id='question-header').find('a', class_='question-hyperlink').get_text() #This gets the title
 
     creationTime = soup.find('div', class_='user-action-time').find('span').get('title').split(' ')
@@ -49,9 +52,11 @@ def createRef(link):
     return outString
 
 if __name__ == '__main__':
-    # links = loadFile('linkInputs')
-    # refs = []
-    # outfile = 'refGenerator'
+    links = loadFile('linkInputs')
+    refs = []
+    outfile = 'refGenerator'
+
+    print(createRef(links[0]))
     # for link in links:
     #     ref = createRef(link)
     #     refs.append(ref)
@@ -60,8 +65,8 @@ if __name__ == '__main__':
     #     for i in refs:
     #         f.write(f + '\n')
 
-    link = 'https://stackoverflow.com/questions/9346954/doctype-html-what-does-it-mean'
+    # link = str(input('Enter the link to create ref for: '))
 
-    print(createRef(link))
+    # print(createRef(link))
 
     # print(f'Completed writing {len(refs)} refs to file {outFile}.txt')
