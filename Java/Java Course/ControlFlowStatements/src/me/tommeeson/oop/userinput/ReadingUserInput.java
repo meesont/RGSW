@@ -1,4 +1,4 @@
-package me.tommeeson.userinput;
+package me.tommeeson.oop.userinput;
 
 import java.util.Scanner;
 
