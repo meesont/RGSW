@@ -27,7 +27,10 @@ public class ReadingUserInput {
         System.out.println("Enter your name: ");
         String name = scanner.next();
 
-        System.out.println("Hello " + name);
+        System.out.println("Enter your age: ");
+        int age = scanner.nextInt();
+
+        System.out.println("Hello " + name + " you are " + age + " years old!");
         scanner.close();
 
     }
