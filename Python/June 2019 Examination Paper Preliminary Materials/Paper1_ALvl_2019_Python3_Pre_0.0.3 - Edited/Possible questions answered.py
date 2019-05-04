@@ -801,7 +801,11 @@ def Main():
   Items = []
   Characters = []
   Places = []
-  Filename = input("Enter filename> ") + ".gme"
+  inputFilename = input("Enter filename> ")
+  if('.gme' in inputFilename):
+      Filename = inputFilename
+  else:
+      Filename = inputFilename + ".gme"
   print()
   GameLoaded, Characters, Items, Places = LoadGame(Filename, Characters, Items, Places)
   if GameLoaded:
