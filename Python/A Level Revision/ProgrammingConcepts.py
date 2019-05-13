@@ -30,7 +30,7 @@ if x < 5:
     raise Exception(f'x should not be < than 5. Value of x was {x}') # this creates an exception and stops program
 else:
     try:
-        with open('file.txt', r) as f:
+        with open('file.txt', r) as f: # file handling read/write/append
             data = f.read()
     except:
         print('could not open file.txt')
