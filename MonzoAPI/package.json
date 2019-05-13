@@ -1,0 +1,14 @@
+{
+  "name": "monzo-backend-api",
+  "version": "1.0.0",
+  "description": "A basic backend node app written to interact with the Monzo API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Meeson",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "monzo-bank": "^0.1.12"
+  }
+}
