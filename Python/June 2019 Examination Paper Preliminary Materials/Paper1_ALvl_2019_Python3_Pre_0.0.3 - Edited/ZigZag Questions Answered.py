@@ -12,7 +12,7 @@ INVENTORY = 1001
 MINIMUM_ID_FOR_ITEM = 2001
 ID_DIFFERENCE_FOR_OBJECT_IN_TWO_LOCATIONS = 10000
 
-class Place():
+class Place:
     def __init__(self):
         self.Description = ""
         self.ID = self.North = self.East = self.South = self.West = self.Up = self.Down = 0
@@ -108,10 +108,15 @@ def DisplayContentsOfContainerItem(Items, ContainerID): #Container item may be s
     else:
         print("nothing.")
 
-def Examine(Items, Characters, ItemToExamine, CurrentLocation):
+def Examine(Items, Characters, Places, ItemToExamine, CurrentLocation):
     Count = 0
     if ItemToExamine == "inventory": #Allows player to exmaine own inventory and see which items they have in their posession
         DisplayInventory(Items)
+    elif ItemToExamine == "room":
+        print()
+        print()
+        print(Places[Characters[0].CurrentLocation -1].Description)
+        DisplayGettableItemsInLocation(Items, Characters[0].CurrentLocation)
     else:
         IndexOfItem = GetIndexOfItem(ItemToExamine, -1, Items)
         if IndexOfItem != -1:
@@ -521,7 +526,7 @@ def PlayGame(Characters, Items, Places):
         elif Command == "read":
             ReadItem(Items, Instruction, Characters[0].CurrentLocation)
         elif Command == "examine":
-            Examine(Items, Characters, Instruction, Characters[0].CurrentLocation)
+            Examine(Items, Characters, Places, Instruction, Characters[0].CurrentLocation)
         elif Command == "open":
             ResultOfOpenClose, Items, Places = OpenClose(True, Items, Places, Instruction, Characters[0].CurrentLocation)
             DisplayOpenCloseMessage(ResultOfOpenClose, True)
@@ -536,7 +541,11 @@ def PlayGame(Characters, Items, Places):
             Items = PlayDiceGame(Characters, Items, Instruction)
         elif Command == "quit":
             Say("You decide to give up, try again another time.")
-            StopGame = True
+
+            res = GetInstruction()
+            if res == "y" or res == "yes":
+                StopGame = True
+
         elif Command == "help":
             ShowHelp()
         else:

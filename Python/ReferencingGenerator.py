@@ -40,6 +40,7 @@ def createRef(link):
     soup = bs(response.content, 'html.parser')
     # print(soup)
     title = soup.find('div', id='question-header').find('a', class_='question-hyperlink').get_text() #This gets the title
+    title = soup.find('div', id('question-header')).find('a')
 
     creationTime = soup.find('div', class_='user-action-time').find('span').get('title').split(' ')
     creationTime = creationTime[0].split('-')
