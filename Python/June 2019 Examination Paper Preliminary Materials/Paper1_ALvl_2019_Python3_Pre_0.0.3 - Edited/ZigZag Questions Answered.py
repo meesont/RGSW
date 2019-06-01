@@ -21,7 +21,7 @@ class Character:
     def __init__(self):
         self.Name = self.Description = ""
         self.ID = self.CurrentLocation = 0
-        self.Heath = 10
+        self.Health = 10
 
 class Item:
     def __init__(self):
@@ -541,13 +541,22 @@ def TakeItemFromOtherCharacter(Items, OtherCharacterID):
     print(".")
     ChosenItem = input()
     if invSize >= MAX_INVENTORY:
+        print(invSize)
+        print(MAX_INVENTORY)
         print("Inventory full")
     elif ChosenItem in ListOfNamesOfItemsInInventory:
         print("You have that now.")
         Pos = ListOfNamesOfItemsInInventory.index(ChosenItem)
         Items = ChangeLocationOfItem(Items, ListOfIndicesOfItemsInInventory[Pos], INVENTORY)
     else:
-        print("They don't have that item, so you don't take anything this time.")
+        print(f"They don't have a {ChosenItem} - try again")
+
+        # recursion boiiiiii
+        # shit code yes yes aqa cheers mate
+        # i got cancer from writing this line of code cheers
+        # isnt even the way they wanted it done but they insist on shit code normally so I am providing it
+        TakeItemFromOtherCharacter(Items, OtherCharacterID)
+        # print("They don't have that item, so you don't take anything this time.")
     return Items
 
 def TakeRandomItemFromPlayer(Items, OtherCharacterID):
