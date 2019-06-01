@@ -21,6 +21,7 @@ class Character:
     def __init__(self):
         self.Name = self.Description = ""
         self.ID = self.CurrentLocation = 0
+        self.Heath = 10
 
 class Item:
     def __init__(self):
@@ -68,7 +69,6 @@ def DropItem(Items, ItemToDrop, CurrentLocation):
         print(f"{ItemToDrop} dropped!")
     return Items
 
-
 def DisplayCharacters(Characters):
     Header = ""
     Header += "%-5s" % ("ID",)
@@ -84,7 +84,7 @@ def DisplayCharacters(Characters):
         line += "%d" % (Character.CurrentLocation,)
         print(line)
 
-# why do aqa ask stupid shit lke places when noe used
+# why do aqa ask stupid shit lke places when not used
 def FillVessel(Characters, Items, Places, Vessel):
 
     IsContainer, ByBarrel, FillableVessel, InInventory = False
@@ -107,6 +107,24 @@ def FillVessel(Characters, Items, Places, Vessel):
         print("Already full!")
     else:
         print("You cannot do that")
+
+
+def EatItem(Characters, Items, ItemToEat):
+
+    indexOfItem = GetIndexOfItem(ItemToEat, -1,  Items)
+
+    if indexOfItem > -1:
+        if "edible" in Items[ItemToEat].Status and Items[ItemToEat].Location == INVENTORY:
+            Characters[0].Health += 5
+            del Items[ItemToEat]
+            print(f"You ate that {ItemToEat}")
+            print(f"Your health is {Characters[0].Health}")
+        else:
+            print("You cannot eat that")
+    else:
+        print("You cannot eat that")
+
+
 
 # Base Code
 
@@ -645,6 +663,7 @@ def PlayGame(Characters, Items, Places):
             print()
             print()
             print(Places[Characters[0].CurrentLocation - 1].Description)
+            print(f"Your health is {Characters[0].Health}")
             DisplayGettableItemsInLocation(Items, Characters[0].CurrentLocation)
             Moved = False
         Instruction = GetInstruction()
@@ -673,6 +692,8 @@ def PlayGame(Characters, Items, Places):
             Say(Instruction)
         elif Command == "playdice":
             Items = PlayDiceGame(Characters, Items, Instruction)
+
+        # added commands
         elif Command == "quit":
             Say("Are you sure you wish to quit? ")
             res = GetInstruction()
@@ -686,6 +707,8 @@ def PlayGame(Characters, Items, Places):
             Items = DropItem(Items, Instruction, Characters[0].GetLocation)
         elif Command == "debugchar":
             DisplayCharacters(Characters)
+        elif Command == "eat":
+            EatItem(Characters, Items, Instruction)
         else:
             print("Sorry, you don't know how to " + Command + ".")
     input()
