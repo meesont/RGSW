@@ -28,7 +28,30 @@ class Item:
         self.Description = self.Status = self.Name = self.Commands = self.Results = ""
 
 
+
 # ZigZag Answers
+
+# uses a stack
+# stack is a LIFO structure
+class History:
+    def __init__(self):
+        self.Pointer = -1
+        self.Locations = [None] * 5 # prevents stack going over 5 elements
+    def push(self, newLocation):
+        if self.Pointer < 4: #could also use <= 3
+            self.Pointer += 1
+            self.Locations[self.Pointer] = newLocation
+        else:
+            for x in range(0, 3): # shift all down by 1 and remove first element
+                self.Locations[x] = self.Locations[x+1]
+                self.Locations[4] = newLocation
+    def pop(self):
+        if self.Pointer > -1:
+            self.Pointer -= 1
+            return self.Locations[self.Pointer]
+        else:
+            return -1
+
 
 def ShowHelp():
     print("You can enter one of the following commands: \n go, get, use, examine, say, quit, read, move, open, close and playdice.")
@@ -61,6 +84,31 @@ def DisplayCharacters(Characters):
         line += "%d" % (Character.CurrentLocation,)
         print(line)
 
+# why do aqa ask stupid shit lke places when noe used
+def FillVessel(Characters, Items, Places, Vessel):
+
+    IsContainer, ByBarrel, FillableVessel, InInventory = False
+
+    for thing in Items:
+        if Vessel == thing and "container" in thing.Status and not "large" in thing.Status:
+            IsContainer = True
+            Fillable = thing
+        if Vessel == thing.Name and thing.Location == INVENTORY:
+            InInventory = True
+        if thing.Name == "barrel" and thing.Location == Characters[0].CurrentLocation:
+            ByBarrel = True
+
+    if IsContainer and ByBarrel and FillableVessel and InInventory and " of water" not in Fillable.Name:
+
+        Fillable.Name = Vessel.Name + " of water"
+        print(f"You have filled the {Vessel}")
+
+    elif Fillable is not None and " of water" not in Fillable.Name:
+        print("Already full!")
+    else:
+        print("You cannot do that")
+
+# Base Code
 
 def GetInstruction():
     print(os.linesep)
@@ -78,38 +126,55 @@ def ExtractCommand(Instruction):
         Instruction = Instruction[1:]
     return Command, Instruction
 
-def Go(You, Direction, CurrentPlace):
+def Go(You, Direction, CurrentPlace, Past):
     Moved = True
     if Direction == "north":
         if CurrentPlace.North == 0:
             Moved = False
         else:
+            Past.push(You.CurrentLocation)
             You.CurrentLocation = CurrentPlace.North
     elif Direction == "east":
         if CurrentPlace.East == 0:
             Moved = False
         else:
+            Past.push(You.CurrentLocation)
+
             You.CurrentLocation = CurrentPlace.East
     elif Direction == "south":
         if CurrentPlace.South == 0:
             Moved = False
         else:
+            Past.push(You.CurrentLocation)
+
             You.CurrentLocation = CurrentPlace.South
     elif Direction == "west":
         if CurrentPlace.West == 0:
             Moved = False
         else:
+            Past.push(You.CurrentLocation)
+
             You.CurrentLocation = CurrentPlace.West
     elif Direction == "up":
         if CurrentPlace.Up == 0:
             Moved = False
         else:
+            Past.push(You.CurrentLocation)
+
             You.CurrentLocation = CurrentPlace.Up
     elif Direction == "down":
         if CurrentPlace.Down == 0:
             Moved = False
         else:
+            Past.push(You.CurrentLocation)
+
             You.CurrentLocation = CurrentPlace.Down
+    elif Direction == "back":
+        NewLocation = Past.pop()
+        if NewLocation is not -1:
+            You.CurrentLocation = NewLocation
+        else:
+            print("You cannot go back")
     else:
         Moved = False
     if not Moved:
@@ -570,6 +635,9 @@ def DisplayOpenCloseMessage(ResultOfOpenClose, OpenCommand):
         Say("You can't open that.")
 
 def PlayGame(Characters, Items, Places):
+
+    Past = History
+
     StopGame = False
     Moved = True
     while not StopGame:
@@ -586,7 +654,9 @@ def PlayGame(Characters, Items, Places):
         elif Command == "use":
             StopGame, Items = UseItem(Items, Instruction, Characters[0].CurrentLocation, Places)
         elif Command == "go":
-            Characters[0], Moved = Go(Characters[0], Instruction, Places[Characters[0].CurrentLocation - 1])
+            # additional attribute past added for history
+            Characters[0], Moved = Go(Characters[0], Instruction, Places[Characters[0].CurrentLocation - 1], Past)
+
         elif Command == "read":
             ReadItem(Items, Instruction, Characters[0].CurrentLocation)
         elif Command == "examine":
