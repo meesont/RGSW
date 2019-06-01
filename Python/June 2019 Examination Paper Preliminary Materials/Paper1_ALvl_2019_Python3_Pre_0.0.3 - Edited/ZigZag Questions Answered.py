@@ -3,14 +3,14 @@
 #written by the AQA Programmer Team
 #developed in the Python 3.5.1 programming environment
 
-import random
-import pickle
 import os
-import struct
+import pickle
+import random
 
 INVENTORY = 1001
 MINIMUM_ID_FOR_ITEM = 2001
 ID_DIFFERENCE_FOR_OBJECT_IN_TWO_LOCATIONS = 10000
+MAX_INVENTORY = 4
 
 class Place:
     def __init__(self):
@@ -32,6 +32,34 @@ class Item:
 
 def ShowHelp():
     print("You can enter one of the following commands: \n go, get, use, examine, say, quit, read, move, open, close and playdice.")
+
+def DropItem(Items, ItemToDrop, CurrentLocation):
+
+    IndexOfItem = GetIndexOfItem(ItemToDrop.Name, -1, Items)
+
+    # Check if in inventory
+    if not ItemToDrop[IndexOfItem].Location == INVENTORY:
+        print(f"You are not carrying a {ItemToDrop} so you cannot drop it")
+    else:
+        ChangeLocationOfItem(Items, IndexOfItem, CurrentLocation)
+        print(f"{ItemToDrop} dropped!")
+    return Items
+
+
+def DisplayCharacters(Characters):
+    Header = ""
+    Header += "%-5s" % ("ID",)
+    Header += "%-12s" % ("NAME",)
+    Header += "%-64s" % ("DESCRIPTION",)
+    Header += "CURRENTLOCATION"
+    print(Header)
+    for Character in Characters:
+        line = ""
+        line += "%-5s" % (Character.Id,)
+        line += "%-12s" % (Character.Name,)
+        line += "%-64s" % (Character.Description,)
+        line += "%d" % (Character.CurrentLocation,)
+        print(line)
 
 
 def GetInstruction():
@@ -273,14 +301,21 @@ def RollDie(Lower, Upper):
         LowerLimitValue = int(Lower)
     else:
         while LowerLimitValue < 1 or LowerLimitValue > 6:
-            LowerLimitValue = int(input("Enter minimum: "))
+            try:
+                LowerLimitValue = int(input("Enter minimum: "))
+            except:
+                LowerLimitValue = 0
     UpperLimitValue = 0
     if Upper.isnumeric():
         UpperLimitValue = int(Upper)
     else:
         while UpperLimitValue < LowerLimitValue or UpperLimitValue > 6:
-            UpperLimitValue = int(input("Enter maximum: "))
+            try:
+                UpperLimitValue = int(input("Enter maximum: "))
+            except:
+                UpperLimitValue = 0
     return GetRandomNumber(LowerLimitValue, UpperLimitValue)
+
 
 def ChangeStatusOfDoor(Items, CurrentLocation, IndexOfItemToLockUnlock, IndexOfOtherSideItemToLockUnlock):
     if CurrentLocation == Items[IndexOfItemToLockUnlock].Location or CurrentLocation == Items[IndexOfOtherSideItemToLockUnlock].Location:
@@ -338,11 +373,19 @@ def ReadItem(Items, ItemToRead, CurrentLocation):
             Say(SubCommandParameter)
 
 def GetItem(Items, ItemToGet, CurrentLocation):
+    invSize = 0
+
+    for Thing in Items:
+        if Thing.Location == INVENTORY:
+            invSize += 1
+
     SubCommand = ""
     SubCommandParameter = ""
     CanGet = False
     IndexOfItem = GetIndexOfItem(ItemToGet, -1, Items)
-    if IndexOfItem == -1:
+    if invSize >= MAX_INVENTORY:
+        print("Your inventory is full!")
+    elif IndexOfItem == -1:
         print("You can't find " + ItemToGet + ".")
     elif Items[IndexOfItem].Location == INVENTORY:
         print("You have already got that!")
@@ -392,6 +435,12 @@ def CheckIfDiceGamePossible(Items, Characters, OtherCharacterName):
     return PlayerHasDie and PlayersInSameRoom and OtherCharacterHasDie, IndexOfPlayerDie, IndexOfOtherCharacter, IndexOfOtherCharacterDie
 
 def TakeItemFromOtherCharacter(Items, OtherCharacterID):
+    invSize = 0
+
+    for Thing in Items:
+        if Thing.Location == INVENTORY:
+            invSize += 1
+
     ListOfIndicesOfItemsInInventory = []
     ListOfNamesOfItemsInInventory = []
     Count = 0
@@ -408,7 +457,9 @@ def TakeItemFromOtherCharacter(Items, OtherCharacterID):
         Count += 1
     print(".")
     ChosenItem = input()
-    if ChosenItem in ListOfNamesOfItemsInInventory:
+    if invSize >= MAX_INVENTORY:
+        print("Inventory full")
+    elif ChosenItem in ListOfNamesOfItemsInInventory:
         print("You have that now.")
         Pos = ListOfNamesOfItemsInInventory.index(ChosenItem)
         Items = ChangeLocationOfItem(Items, ListOfIndicesOfItemsInInventory[Pos], INVENTORY)
@@ -417,6 +468,7 @@ def TakeItemFromOtherCharacter(Items, OtherCharacterID):
     return Items
 
 def TakeRandomItemFromPlayer(Items, OtherCharacterID):
+
     ListOfIndicesOfItemsInInventory = []
     Count = 0
     while Count < len(Items):
@@ -473,10 +525,22 @@ def MoveItem(Items, ItemToMove, CurrentLocation):
             return
     print("You can't find " + ItemToMove + ".")
 
+
 def DisplayInventory(Items): #Returns a list of strings for the items in inventory (list of strings not returned rather printed directly to user)
+    InventoryItems = []
+
+    for Thing in Items:
+        if Thing.Location == INVENTORY:
+            InventoryItems.append(Thing)
+
+    for x in range(0, len(InventoryItems) - 1):
+        for i in range(0, len(InventoryItems) - 1):
+            if InventoryItems[i].Name.lower() > InventoryItems[x].Name.lower():
+                InventoryItems[i], InventoryItems[i - 1] = InventoryItems[i - 1], InventoryItems[i]
+
     print()
     print("You are currently carrying the following items:")
-    for Thing in Items:
+    for Thing in InventoryItems:
         if Thing.Location == INVENTORY:
             print(Thing.Name)
 
@@ -540,14 +604,18 @@ def PlayGame(Characters, Items, Places):
         elif Command == "playdice":
             Items = PlayDiceGame(Characters, Items, Instruction)
         elif Command == "quit":
-            Say("You decide to give up, try again another time.")
-
+            Say("Are you sure you wish to quit? ")
             res = GetInstruction()
             if res == "y" or res == "yes":
                 StopGame = True
-
+            else:
+                StopGame = False
         elif Command == "help":
             ShowHelp()
+        elif Command == "drop":
+            Items = DropItem(Items, Instruction, Characters[0].GetLocation)
+        elif Command == "debugchar":
+            DisplayCharacters(Characters)
         else:
             print("Sorry, you don't know how to " + Command + ".")
     input()
@@ -594,14 +662,22 @@ def Main():
     Items = []
     Characters = []
     Places = []
-    Filename = input("Enter filename> ") + ".gme"
-    print()
-    GameLoaded, Characters, Items, Places = LoadGame(Filename, Characters, Items, Places)
-    if GameLoaded:
-        PlayGame(Characters, Items, Places)
-    else:
-        print("Unable to load game.")
-        input()
+
+    GameLoaded = False
+    while not GameLoaded:
+        Filename = input("Enter filename or q to quit> ")
+
+        if Filename == "Q":
+            break
+
+        if ".gme" not in Filename:
+            Filename += ".gme"
+        print()
+        GameLoaded, Characters, Items, Places = LoadGame(Filename, Characters, Items, Places)
+        if GameLoaded:
+            PlayGame(Characters, Items, Places)
+        else:
+            print("Could not load game!")
 
 if __name__ == "__main__":
     Main()
