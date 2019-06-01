@@ -515,6 +515,13 @@ def CheckIfDiceGamePossible(Items, Characters, OtherCharacterName):
                     IndexOfOtherCharacterDie = GetIndexOfItem("", Thing.ID, Items)
                     IndexOfOtherCharacter = Count
         Count += 1
+
+    if not PlayerHasDie:
+        print("You don't have a die to play with!")
+    elif not OtherCharacterHasDie:
+        print(f"{OtherCharacterName} has no die!")
+    elif not PlayersInSameRoom:
+        print(f"{OtherCharacterName} is not here!")
     return PlayerHasDie and PlayersInSameRoom and OtherCharacterHasDie, IndexOfPlayerDie, IndexOfOtherCharacter, IndexOfOtherCharacterDie
 
 def TakeItemFromOtherCharacter(Items, OtherCharacterID):
