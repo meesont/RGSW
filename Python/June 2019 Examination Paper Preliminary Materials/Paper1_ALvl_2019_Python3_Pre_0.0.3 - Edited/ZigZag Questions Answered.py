@@ -641,7 +641,10 @@ def DisplayInventory(Items): #Returns a list of strings for the items in invento
     print("You are currently carrying the following items:")
     for Thing in InventoryItems:
         if Thing.Location == INVENTORY:
-            print(Thing.Name)
+            Line = "%-10s" % (Thing.Name, )
+            Line += f" ( {Thing.Description})"
+            print(Line)
+            # print(Thing.Name)
 
 def DisplayGettableItemsInLocation(Items, CurrentLocation):
     ContainsGettableItems = False
