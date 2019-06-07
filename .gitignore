@@ -203,3 +203,5 @@ Java/kahoot-hack-1/*
 Python/BigQuery/env/*
 MonzoAPI/node_modules/*
 credentials.json
+Python/.idea/*
+Python/.DS_Store
