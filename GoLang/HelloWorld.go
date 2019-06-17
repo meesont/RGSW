@@ -1,7 +1,7 @@
 /**
  * @Author: Thomas Meeson <thomas>
  * @Date:   16-06-2019
- * @Last modified by:   thomas
+ * @Last modified by:   Thomas Meeson
  * @Last modified time: 17-06-2019
  * @License: Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,9 +25,10 @@ import (
 
 func main()  {
 
-    var x, y, z, total int;
+    var x, y int;
 
-    total = x + y + z;
+
+    total := x + y;
 
     fmt.Println("Total is: %b" + total);
     var y string;
